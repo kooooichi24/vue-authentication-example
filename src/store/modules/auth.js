@@ -34,7 +34,8 @@ const auth = {
             const token = res.data.token;
             localStorage.setItem('user-token', token);
             commit('AUTH_SUCCESS');
-
+            // Global axios defaults headers
+            axios.defaults.headers.common['Authorization'] = token;
             dispatch('USER_REQUEST');
             resolve(res);
           })
@@ -49,6 +50,8 @@ const auth = {
       return new Promise((resolve) => {
         commit('AUTH_LOGOUT');
         localStorage.removeItem('user-token');
+        // remove the axios default header
+        delete axios.defaults.headers.common['Authorization'];
         resolve();
       })
     }
