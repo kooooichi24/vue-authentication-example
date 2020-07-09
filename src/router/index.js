@@ -1,6 +1,25 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 import Home from '../views/Home.vue'
+import Account from '@/views/Account';
+import Login from '@/views/Login';
+
+const ifNotAuthenticated = (to, from, next) => {
+  if (!store.getters.isAuthenticated) {
+    next();
+    return;
+  }
+  next('/');
+};
+
+const ifAuthenticated = (to, from, next) => {
+  if (store.getters.isAuthenticated) {
+    next();
+    return;
+  }
+  next('/login');
+};
 
 Vue.use(VueRouter)
 
@@ -11,17 +30,16 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/account',
+    name: 'Account',
+    component: Account,
+    beforeEnter: ifAuthenticated,
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/Login')
+    component: Login,
+    beforeEnter: ifNotAuthenticated,
   },
 ]
 
