@@ -2,6 +2,10 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+    <button @click="logout">
+      Logout
+    </button>
   </div>
 </template>
 
@@ -13,6 +17,14 @@ export default {
   name: 'Home',
   components: {
     HelloWorld
-  }
-}
+  },
+  methods: {
+    logout: function() {
+      this.$store.dispatch('auth/AUTH_LOGOUT')
+        .then(() => {
+          this.$router.push('/login')
+        });
+    }
+  },
+};
 </script>
