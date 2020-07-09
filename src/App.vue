@@ -15,7 +15,7 @@ import axios from 'axios';
 export default {
   name: 'App',
   created: function () {
-    axios.intercept.response.use(undefined, function (err) {
+    axios.interceptors.response.use(undefined, function (err) {
       return new Promise(function (resolve, reject) { // eslint-disable-line
         if (err.status === 401 && err.config && err.config.__isRetryRequest) {
           this.$store.dispatch('AUTH_LOGOUT');
